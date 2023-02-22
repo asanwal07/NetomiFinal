@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <body>
+    <form id="myForm">
+      <div class="bg-color">
+        <h3>Can you please provide your personal details.</h3>
+        <div class="inputs">
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="name">
+        </div>
+        <div class="inputs">
+          <label for="dob">Date of Birth</label>
+          <input type="date" id="dob" name="dob">
+        </div>
+        <div class="inputs">
+          <label for="phone">Contact Number:</label>
+          <input type="tel" id="contact" name="phone">
+        </div>
+        <div class="inputs">
+          <label for="country">Country:</label>
+          <select id="country" name="country"></select>
+        </div>
+        <div class="inputs">
+          <label for="state">State:</label>
+          <select id="state" name="state"></select>
+        </div>
+        <div class="inputs">
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email">
+        </div>
+        <button id="submit" type="submit">Submit</button>
+    </form>
+    </div>
+  </body>
+  <script src="./formValidation.js"></script>
+  <script>
+    var countries;
+    function fetchData() {
+      fetch('https://raw.githubusercontent.com/stefanbinder/countries-states/master/countries.json')
+        .then(response => response.json())
+        .then(data => {
+          countries = data;
+          populateCountries();
+        });
+    }
+    function populateCountries() {
+      const countrySelect = document.getElementById('country');
+
+      countries.forEach(country => {
+        const option = document.createElement('option');
+        option.value = country.name;
+        option.textContent = country.name;
+        countrySelect.appendChild(option);
+      });
+      countrySelect.value = "";
+    }
+
+    const countrySelect = document.getElementById('country');
+    const stateSelect = document.getElementById('state');
+
+    countrySelect.addEventListener('change', () => {
+      const selectedCountry = countries.find(country => country.name === countrySelect.value);
+      stateSelect.innerHTML = '';
+
+      if (selectedCountry && selectedCountry.states) {
+        selectedCountry.states.forEach(state => {
+          const option = document.createElement('option');
+          option.value = state.name;
+          option.textContent = state.name;
+          stateSelect.appendChild(option);
+        });
+      }
+      stateSelect.value = "";
+    });
+
+    fetchData();
+  </script>
+
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="main-container">
+        <iframe id="form-frame" src="form.html" id="form-iframe"></iframe>
+        <p id="message"> </p>
+    </div>
+</body>
+
+<script>
+    window.addEventListener('message', function (event) {
+        event.preventDefault();
+        var data = event.data; // get the message data
+        if (data.origin == 'form') {
+            var message = data.message;
+            var messageElement = document.getElementById('message');
+            messageElement.textContent = message; // display the message in an element
+        }
+    });
+
+</script>
+
+</html>
